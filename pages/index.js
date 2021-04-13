@@ -1,3 +1,4 @@
+import {useState, useEffect} from 'react'
 import Head from 'next/head'
 import { CharacterCard } from '../components/CharacterCard';
 import styles from '../styles/Home.module.css'
@@ -14,10 +15,25 @@ export async function getStaticProps() {
   }
 }
 
-
-
 export default function Home({ characters }) {
-  console.log(characters)
+
+  // state variable to hold search terms
+  const [searchTerms, setTerms] = useState("")
+
+  //state variable to hold filtered characters
+  const [filteredCharacters, setFilteredCharacters] = useState([])
+
+  // if the search bar is empty all characters will be listed
+  // if the search bar isn't empty, the list will be filtered
+  useEffect(() => {
+    if (searchTerms !== "") {
+      const subset = characters.results.filter(character => character.name.toLowerCase().includes(searchTerms))
+      setFilteredCharacters(subset)
+    } else {
+      setFilteredCharacters(characters.results)
+    }
+  }, [searchTerms])
+  
   return (
     <div className={styles.container}>
       <Head>
@@ -35,8 +51,17 @@ export default function Home({ characters }) {
           <a href="https://www.swapi.tech/">swapi.tech!</a>
         </p>
 
+        <p className={styles.description}>
+        <>
+        <input type="text"
+            className="search"
+            onKeyUp={event => setTerms(event.target.value)}
+            placeholder="Search for a character..." />
+        </>
+        </p>
+
         <div className={styles.grid}>
-          {characters.results.map(character => {
+          {filteredCharacters.map(character => {
             return CharacterCard(character)
           })}
         </div>
