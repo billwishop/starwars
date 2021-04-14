@@ -77,7 +77,10 @@
   max-width: 800px;
   min-width: 800px;
   margin-top: 3rem;
+  min-height: 100px;
 }
+
+
 
 .details {
   margin: 1rem;

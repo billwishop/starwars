@@ -40,7 +40,7 @@ export default function Home({ characters }) {
       <main className={styles.main}>
         <>
         <Input type="text"
-            className="search"
+            className={styles.search}
             onKeyUp={event => setTerms(event.target.value)}
             startAdornment={
               <SearchIcon className="searchIcon icon"/> 
