@@ -6,7 +6,7 @@ export const StarshipProvider = props => {
     const [starships, setStarships] = useState([])
 
     const getStarships = () => {
-        return fetch("https://www.swapi.tech/api/starships")
+        return fetch("https://www.swapi.tech/api/starships?page=1&limit=36")
         .then(r => r.json())
         .then(setStarships)
     }

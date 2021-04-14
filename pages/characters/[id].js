@@ -1,27 +1,23 @@
 import Link from 'next/link'
 import { useContext, useEffect, useState } from 'react'
 import { FilmContext } from '../../components/FilmDataProvider'
-import { StarshipContext } from '../../components/ShipDataProvider'
-import { SpeciesContext } from '../../components/SpeciesDataProvider'
+// import { StarshipContext } from '../../components/ShipDataProvider'
+// import { SpeciesContext } from '../../components/SpeciesDataProvider'
+import Card from '@material-ui/core/Card';
+import Divider from '@material-ui/core/Divider';
 import { getAllCharacterIds, getCharacterData } from '../../lib/characters'
+import styles from '../../styles/Home.module.css'
 
 export default function CharacterDetails({ characterData }) {
-    console.log({characterData})
     const {getFilms, films} = useContext(FilmContext)
-    const {getStarships, starships} = useContext(StarshipContext)
-    const {getSpecies, species} = useContext(SpeciesContext)
 
+    // state variable for the current character's films
     const [characterFilms, setCharacterFilms] = useState([])
 
     useEffect(() => {
         getFilms()
-        .then(getStarships)
-        .then(getSpecies)
     }, [])
     
-    console.log({starships})
-    // console.log({species})
-
     // responsible for finding what films the character was in 
     // and setting the state variable
     useEffect(() => {
@@ -32,22 +28,18 @@ export default function CharacterDetails({ characterData }) {
         setCharacterFilms(myFilms)}
     }, [films])
 
-
-
-
     return (
-        <>
+        <Card className={styles.details}>
             <h1>{characterData.result.properties.name}</h1>
-            <h3>About me:</h3>
+            <Divider className={styles.divider}/>
+            <h3>About Me:</h3>
             <ul>
                 <li>Height: {characterData.result.properties.height}</li>
                 <li>Mass: {characterData.result.properties.mass}</li>
                 <li>Birth Year: {characterData.result.properties.birth_year}</li>
-
-               <li>*******Species: filter and find species*********</li> 
             </ul>
 
-            <h3>Films I Appeared In:</h3>
+            <h3>Films:</h3>
             <ul>
                 {characterFilms.length > 0 
                 && 
@@ -56,14 +48,12 @@ export default function CharacterDetails({ characterData }) {
                     })
                 }
             </ul>
-
-
             <small>
             <Link href="/">
-                <a>Back to home &rarr;</a>
+                <a className={styles.home}>Back to home &rarr;</a>
             </Link>
             </small>
-        </>
+        </Card>
     )
 }
 
